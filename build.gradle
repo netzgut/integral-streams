@@ -1,0 +1,85 @@
+group 'net.netzgut.integral'
+version '0.0.1-SNAPSHOT'
+
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+}
+
+
+project.ext.versions = [
+    // No dependencies
+]
+
+dependencies {
+    // No dependencies
+}
+
+test {
+    useTestNG()
+
+    options.suites("src/test/conf/testng.xml")
+
+    systemProperties["tapestry.service-reloading-enabled"] = "false"
+    systemProperties["tapestry.execution-mode"] = "development"
+
+    maxHeapSize = "600M"
+
+    jvmArgs("-XX:MaxPermSize=256M")
+
+    enableAssertions = true
+}
+
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2'
+}
+
+
+task pom << {
+    pom {
+        packaging = 'jar'
+        project {
+            inceptionYear '2016'
+            name rootProject.name
+            description 'A simple streams helper'
+            url 'https://github.com/netzgut/integral-streams.git'
+            properties {
+                'project.build.sourceEncoding' 'UTF-8'
+            }
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                url 'https://github.com/netzgut/integral-streams.git'
+                connection 'scm:git:git://github.com/netzgut/integral-streams.git'
+                developerConnection 'scm:git:git@github.com:netzgut/integral-streams.git'
+            }
+        }
+    }.withXml { xmlProvider ->
+        def plugins = xmlProvider.asNode().appendNode('build').appendNode('plugins')
+        def mavenCompilerPlugin = plugins.appendNode('plugin')
+        mavenCompilerPlugin.appendNode('artifactId').value = 'maven-compiler-plugin'
+        mavenCompilerPlugin.appendNode('version').value = '3.1'
+        def mavenCompilerPluginConfiguration = mavenCompilerPlugin.appendNode('configuration')
+        mavenCompilerPluginConfiguration.appendNode('source').value = sourceCompatibility
+        mavenCompilerPluginConfiguration.appendNode('target').value = targetCompatibility
+
+        def mavenSurefirePlugin = plugins.appendNode('plugin')
+        mavenSurefirePlugin.appendNode('artifactId').value = 'maven-surfire-plugin'
+        mavenSurefirePlugin.appendNode('version').value = '2.19.1'
+        mavenSurefirePlugin.appendNode('configuration')
+    }.writeTo('pom.xml')
+}
