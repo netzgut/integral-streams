@@ -1,4 +1,4 @@
-# ∫ Integral Hibernate Contribution
+# ∫ Integral Streams Contribution
 
 If you want to contribute feel free to open issues or provide pull requests.
 
