@@ -16,11 +16,11 @@ buildscript {
 
 
 project.ext.versions = [
-    // No dependencies
+     testng: '6.8.21'
 ]
 
 dependencies {
-    // No dependencies
+     testCompile "org.testng:testng:${versions.testng}", { transitive = false }
 }
 
 test {
