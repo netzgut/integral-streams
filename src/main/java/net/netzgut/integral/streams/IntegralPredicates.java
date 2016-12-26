@@ -13,9 +13,9 @@ public class IntegralPredicates {
     }
 
     /**
-     * Compares with ==.
+     * Compares with ==/identity.
      */
-    public static <T> Predicate<T> is(T value) {
+    public static <T> Predicate<T> identity(T value) {
         return input -> input == value;
     }
 
@@ -23,7 +23,14 @@ public class IntegralPredicates {
      * Checks if an object is assignable from a class.
      */
     public static <T> Predicate<T> assignableFrom(Class<?> clazz) {
-        return input -> input.getClass().isAssignableFrom(clazz);
+        return input -> clazz.isAssignableFrom(input.getClass());
+    }
+
+    /**
+     * Checks if an object is an instance of a class.
+     */
+    public static <T> Predicate<T> isInstance(Class<?> clazz) {
+        return input -> clazz.isInstance(input);
     }
 
     /**
@@ -51,9 +58,7 @@ public class IntegralPredicates {
      */
     @SafeVarargs
     public static <T> Predicate<T> none(Predicate<T>... predicates) {
-        return Stream.of(predicates) //
-                     .reduce(never(), //
-                             (p1, p2) -> not(p1.and(p2)));
+        return not(anyOf(predicates));
     }
 
     public static <T> Predicate<T> always() {
