@@ -2,6 +2,7 @@
 bin/
 target/
 tmp/
+test-output/
 .settings/
 .recommenders
 src/main/webapp/WEB-INF/tmp
