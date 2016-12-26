@@ -39,7 +39,7 @@ public class IntegralStreams {
     /**
      * Creates a stream out of an Iterator.
      */
-    public static <T> Stream<T> stream(Iterator<T> iterator) {
+    public static <T> Stream<T> of(Iterator<T> iterator) {
         if (iterator == null || iterator.hasNext() == false) {
             return Stream.empty();
         }
