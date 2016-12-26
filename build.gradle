@@ -16,20 +16,17 @@ buildscript {
 
 
 project.ext.versions = [
-     testng: '6.8.21'
+     testng: '6.10'
 ]
 
 dependencies {
-     testCompile "org.testng:testng:${versions.testng}", { transitive = false }
+     testCompile "org.testng:testng:${versions.testng}"
 }
 
 test {
     useTestNG()
 
     options.suites("src/test/conf/testng.xml")
-
-    systemProperties["tapestry.service-reloading-enabled"] = "false"
-    systemProperties["tapestry.execution-mode"] = "development"
 
     maxHeapSize = "600M"
 
