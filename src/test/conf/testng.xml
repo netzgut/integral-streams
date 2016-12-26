@@ -7,11 +7,10 @@
 	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
 	the specific language governing permissions and limitations under the License. -->
 
-<suite name="Core Hibernate" parallel="false" thread-count="10"
-	annotations="1.5" verbose="2">
-	<test name="Tapestry Hibernate Internal APIs">
-		<packages>
-			<package name="net.netzgut.integral.internal.hibernate" />
-		</packages>
-	</test>
+<suite name="Integral Streams" parallel="false" thread-count="10" annotations="1.5" verbose="2">
+    <test name="Integral Streams">
+        <packages>
+            <package name="net.netzgut.integral.streams.tests" />
+        </packages>
+    </test>
 </suite>
