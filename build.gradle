@@ -21,7 +21,7 @@ repositories {
 }
 
 project.ext.versions = [
-     testng: '6.10'
+     testng: '6.12'
 ]
 
 dependencies {
@@ -42,7 +42,7 @@ test {
 
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.6'
 }
 
 
