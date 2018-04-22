@@ -1,24 +1,20 @@
-group 'net.netzgut.integral'
-version '0.0.1-SNAPSHOT'
-
-
-apply plugin: 'java'
-apply plugin: 'maven'
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
 buildscript {
     repositories {
+        mavenCentral()
         jcenter()
     }
 }
 
-repositories {
-    mavenCentral()
-    jcenter()
-    mavenLocal()
+plugins {
+    id 'java'
+    id 'maven'
+    id 'com.github.hierynomus.license' version '0.14.0'
 }
+group 'net.netzgut.integral'
+version '0.0.1-SNAPSHOT'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 project.ext.versions = [
      testng: '6.12'
@@ -75,7 +71,7 @@ task pom {
             def plugins = xmlProvider.asNode().appendNode('build').appendNode('plugins')
             def mavenCompilerPlugin = plugins.appendNode('plugin')
             mavenCompilerPlugin.appendNode('artifactId').value = 'maven-compiler-plugin'
-            mavenCompilerPlugin.appendNode('version').value = '3.1'
+            mavenCompilerPlugin.appendNode('version').value = '3.5.1'
             def mavenCompilerPluginConfiguration = mavenCompilerPlugin.appendNode('configuration')
             mavenCompilerPluginConfiguration.appendNode('source').value = sourceCompatibility
             mavenCompilerPluginConfiguration.appendNode('target').value = targetCompatibility
@@ -86,4 +82,33 @@ task pom {
             mavenSurefirePlugin.appendNode('configuration')
         }.writeTo('pom.xml')
     }
+}
+
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts { archives sourcesJar }
+
+uploadArchives {
+    // We need to set the variables if not present
+    ext.snapshot_repository = project.hasProperty('snapshot-repository') ? project.property('snapshot-repository') : ''
+    ext.snapshot_repository_username = project.hasProperty('snapshot-repository-username') ? project.property('snapshot-repository-username') : ''
+    ext.snapshot_repository_password = project.hasProperty('snapshot-repository-password') ? project.property('snapshot-repository-password') : ''
+
+    repositories {
+        mavenDeployer {
+            snapshotRepository(url: snapshot_repository) {
+                authentication(userName: snapshot_repository_username, password: snapshot_repository_password)
+            }
+        }
+    }
+}
+
+license {
+    header rootProject.file('src/main/resources/META-INF/LICENSE.txt')
+    strictCheck true
+    ext.year = Calendar.getInstance().get(Calendar.YEAR)
 }
